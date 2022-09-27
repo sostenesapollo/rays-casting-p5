@@ -2,8 +2,16 @@ class Particle {
   constructor() {
     this.pos = createVector(width/2, height/2)
     this.rays = []
-    for(let angle = 320; angle <360; angle+= 1) {
+    this.heading = 0
+    for(let angle = 0; angle < 30; angle+= 1) {
       this.rays.push(new Ray(this.pos, radians(angle)))
+    }
+  }
+
+  rotate(angle) {
+    this.heading += angle
+    for(let i = 0; angle < this.rays.length; i+= 1) {
+      this.rays[i].setAngle(radians(i)+this.heading)
     }
   }
 
@@ -16,27 +24,27 @@ class Particle {
       for(let wall of walls) {
         const pt = ray.cast(wall)
         if(pt) {
-          const d = p5.Vector.dist(this.pos, pt)
+          let d = p5.Vector.dist(this.pos, pt)
+          const a = ray.dir.heading() - this.heading
+          d *= cos(a)
           if(d < record) {
             record = d
             closest = pt
           }
         }
       }
-
       if(closest) {
         stroke(255, 100)
         line(this.pos.x, this.pos.y, closest.x, closest.y)
       }
       scene[i] = record
-      
     }
     return scene
   }
 
   show() {
     fill(255)
-    ellipse(this.pos.x, this.pos.y, 2)
+    ellipse(this.pos.x, this.pos.y, 4)
     for(let ray of this.rays) {
       ray.show()
     } 

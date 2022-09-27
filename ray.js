@@ -18,6 +18,10 @@ class Ray {
         pop()
     }
 
+    setAngle(angle) {
+        this.dir = p5.Vector.fromAngle(angle)
+    }
+
     cast(wall) {
         const x1 = wall.a.x
         const y1 = wall.a.y
