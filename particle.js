@@ -2,13 +2,15 @@ class Particle {
   constructor() {
     this.pos = createVector(width/2, height/2)
     this.rays = []
-    for(let angle = 0; angle <360; angle+= 1) {
+    for(let angle = 320; angle <360; angle+= 1) {
       this.rays.push(new Ray(this.pos, radians(angle)))
     }
   }
 
   look(walls) {
-    for(let ray of this.rays) {
+    const scene = []
+    for(let i =0; i< this.rays.length; i++) {
+      const ray = this.rays[i]
       let closest = null
       let record = Infinity
       for(let wall of walls) {
@@ -26,7 +28,10 @@ class Particle {
         stroke(255, 100)
         line(this.pos.x, this.pos.y, closest.x, closest.y)
       }
+      scene[i] = record
+      
     }
+    return scene
   }
 
   show() {
